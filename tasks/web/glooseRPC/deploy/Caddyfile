@@ -1,0 +1,21 @@
+# Bro really said: ⚠️ Do not mount the Caddyfile directly at /etc/caddy/Caddyfile
+
+:80 {
+    handle /grpc/* {
+        # trim /grpc/ from path
+        uri strip_prefix /grpc
+        reverse_proxy envoy:8080 {
+            header_up Host {http.request.host}
+            header_up X-Forwarded-For {http.request.remote}
+            header_up X-Forwarded-Proto {http.request.scheme}
+        }
+    }
+
+    handle {
+        reverse_proxy frontend:3000 {
+            header_up Host {http.request.host}
+            header_up X-Forwarded-For {http.request.remote}
+            header_up X-Forwarded-Proto {http.request.scheme}
+        }
+    }
+}

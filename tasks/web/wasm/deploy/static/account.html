@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой аккаунт</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚓</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        #qrcode-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #qrcode {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: white;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="container mt-5">
+        <h2>Аккаунт <span id="username-placeholder" class="text-primary"></span></h2>
+        <div id="alert-placeholder"></div>
+
+        <div id="otp-section" class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Ваш ключ OTP</h5>
+                <p>Отсканируйте QR-код с помощью приложения аутентификатора (например, Google Authenticator, Authy) или введите ключ вручную.</p>
+                <div id="qrcode-container">
+                    <p><strong>Ключ:</strong> <span id="secret-key-placeholder" class="text-muted"></span></p>
+                    <div id="qrcode"></div>
+                </div>
+            </div>
+        </div>
+
+        <form id="change-password-form" class="mt-4 card p-4">
+            <h5 class="card-title">Сменить пароль</h5>
+            <div class="mb-3">
+                <label for="current-password" class="form-label">Текущий пароль</label>
+                <input type="password" class="form-control" id="current-password" required>
+            </div>
+            <div class="mb-3">
+                <label for="new-password" class="form-label">Новый пароль</label>
+                <input type="password" class="form-control" id="new-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Сменить пароль</button>
+        </form>
+    </div>
+    <script src="/js/app.js"></script>
+    <script src="/js/wasm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (async() => {
+            const isLoggedIn = await checkLoginStatus();
+            if (!isLoggedIn) {
+                window.location.href = '/login.html';
+            } else {
+                generateHeader();
+
+                // Fetch user data and generate secret key
+                Module().then(mod => {
+                    fetch('/me', {
+                            method: 'GET',
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                console.error('Failed to fetch /me - user likely not authenticated');
+                                window.location.href = '/login.html';
+                                throw new Error('Not authenticated');
+                            }
+                            const signHeader = response.headers.get('Sign');
+                            return response.json().then(respJson => ({
+                                respJson,
+                                signHeader
+                            }));
+                        })
+                        .then(({
+                            respJson,
+                            signHeader
+                        }) => {
+                            if (!respJson || !signHeader) {
+                                console.error('Missing response body or Sign header from /me');
+                                document.getElementById('secret-key-placeholder').textContent = 'Error generating key';
+                                return;
+                            }
+
+                            const respJsonString = JSON.stringify(respJson);
+
+                            // Display username
+                            document.getElementById('username-placeholder').textContent = respJson.username;
+
+                            const ptr = mod.ccall('generate_otp_c', 'number', ['string', 'string'], [respJsonString, signHeader]);
+                            const otp = mod.UTF8ToString(ptr);
+                            document.getElementById('secret-key-placeholder').textContent = otp;
+
+                            const qrcodeContainer = document.getElementById('qrcode');
+                            qrcodeContainer.innerHTML = '';
+                            new QRCode(qrcodeContainer, {
+                                text: `otpauth://totp/VRNCTF:${respJson.username}?secret=${otp}&issuer=VRNCTF`,
+                                width: 128,
+                                height: 128,
+                                colorDark: "#000000",
+                                colorLight: "#ffffff",
+                                correctLevel: QRCode.CorrectLevel.H
+                            });
+
+                        })
+                        .catch(error => {
+                            console.error('Error fetching /me or generating OTP:', error);
+                            document.getElementById('secret-key-placeholder').textContent = 'Error generating key';
+                        });
+                });
+
+                // Change password form handler
+                document.getElementById('change-password-form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const currentPassword = document.getElementById('current-password').value;
+                    const newPassword = document.getElementById('new-password').value;
+                    fetch('/change_password', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                current_password: currentPassword,
+                                new_password: newPassword
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            const alertPlaceholder = document.getElementById('alert-placeholder');
+                            const wrapper = document.createElement('div');
+                            const alertType = data.message.includes('успешно') ? 'success' : 'danger';
+                            wrapper.innerHTML = [
+                                `<div class="alert alert-${alertType} alert-dismissible" role="alert">`,
+                                `   <div>${data.message}</div>`,
+                                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                                '</div>'
+                            ].join('');
+                            alertPlaceholder.innerHTML = '';
+                            alertPlaceholder.append(wrapper);
+                            if (alertType === 'success') {
+                                document.getElementById('change-password-form').reset();
+                            }
+                        })
+                        .catch(error => {
+                            const alertPlaceholder = document.getElementById('alert-placeholder');
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = [
+                                `<div class="alert alert-danger alert-dismissible" role="alert">`,
+                                `   <div>Ошибка при смене пароля</div>`,
+                                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                                '</div>'
+                            ].join('');
+                            alertPlaceholder.innerHTML = '';
+                            alertPlaceholder.append(wrapper);
+                        });
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+name: "Ship seal"
+author: "@pipeline_sh"
+category: "reverse"
+description: |
+  В архивах Адмиралтейства найден странный прибор: опускаешь в него имя корабля и царскую печать, получаешь разрешение на строительство. 
+  Добыть царскую печать не так то просто! Но в Воронеже появился подозрительный чиновник, который успел получить множество разрешений за короткое время…
+attribution: "Автор [@pipeline_sh](https://t.me/pipeline_sh)"
+value: 1000
+type: dynamic 
+
+extra:
+    initial: 1000
+    decay: 10
+    minimum: 100
+
+connection_info: "https://ship-seal.tasks.ctf.vrnctf.ru"
+
+flags:
+  - vrnctf{th3_v3rdIct_is_n0t_4_s0urc3_0f_truth}
+
+topics:
+  - Path Traversal
+
+files:
+  - public/ship_seal.zip
+
+state: visible
+version: "0.1"
+

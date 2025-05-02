@@ -1,0 +1,30 @@
+name: "Peter chest"
+# Ваш Telegram никнейм (не отображается на платформе)
+author: "@pipeline_sh"
+# Категория - название папки, в которой лежит таск
+category: "reverse"
+# Категория будет отображаться на платформе в описании таска. Поддерживается md формат 
+description: |
+  Корабельные верфи во времена Петра Первого хранили не мало секретов...
+attribution: "Автор [@pipeline_sh](https://t.me/pipeline_sh)"
+value: 1000
+type: dynamic
+
+extra:
+    initial: 1000
+    decay: 10
+    minimum: 100
+
+flags:
+  - vrnctf{n0t_r4nd0m}
+
+files: 
+  - public/target.zip
+
+
+# visible/hidden на платформе
+state: visible
+
+# Не трогаем, версия спецификации
+version: "0.1"
+

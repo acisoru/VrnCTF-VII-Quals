@@ -1,0 +1,4 @@
+flask==2.3.3
+Werkzeug==2.3.7
+flask-limiter==3.5.0
+gunicorn==21.2.0

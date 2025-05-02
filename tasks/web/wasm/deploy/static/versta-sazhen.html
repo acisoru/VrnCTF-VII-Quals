@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор: Версты и Сажени</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚓</text></svg>">
+</head>
+<body>
+    <div id="header"></div>
+    <div class="container mt-5">
+        <h2>Калькулятор: Версты и Сажени</h2>
+        <div class="row g-3 align-items-center mb-3">
+            <div class="col-auto">
+                <label for="versty" class="col-form-label">Версты</label>
+            </div>
+            <div class="col-auto">
+                <input type="number" id="versty" class="form-control" aria-describedby="verstyHelpInline" style="width: 120px;">
+            </div>
+            <div class="col-auto">
+                <span id="verstyHelpInline" class="form-text">
+                    =
+                </span>
+            </div>
+            <div class="col-auto">
+                <label for="sazheni" class="col-form-label">Сажени</label>
+            </div>
+            <div class="col-auto">
+                <input type="number" id="sazheni" class="form-control" aria-describedby="sazheniHelpInline" style="width: 120px;">
+            </div>
+        </div>
+        <p class="text-muted">1 Верста = 500 Саженей</p>
+    </div>
+    <script src="/js/app.js"></script>
+    <script src="/js/wasm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        generateHeader(); // Assuming header generation is needed
+
+        const verstyInput = document.getElementById('versty');
+        const sazheniInput = document.getElementById('sazheni');
+
+        Module().then(mod => {
+            verstyInput.addEventListener('input', function() {
+                const versty = parseFloat(this.value);
+                if (!isNaN(versty)) {
+                    sazheniInput.value = mod.ccall('verst_to_sazhen_c', 'number', ['number'], [versty]);
+                } else {
+                    sazheniInput.value = '';
+                }
+            });
+
+            sazheniInput.addEventListener('input', function() {
+                const sazheni = parseFloat(this.value);
+                if (!isNaN(sazheni)) {
+                    verstyInput.value = mod.ccall('sazhen_to_verst_c', 'number', ['number'], [sazheni]);
+                } else {
+                    verstyInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

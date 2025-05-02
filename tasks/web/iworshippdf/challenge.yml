@@ -1,0 +1,61 @@
+name: "I worship PDF"
+author: "@m41den"
+category: "web"
+# Категория будет отображаться на платформе в описании таска. Поддерживается md формат 
+description: |
+  Кто-то любит PDF, кто-то его ненавидит, мы же ему поклоняемся. Наш спаситель PDF убережет сайт от уязвимостей и не даст
+  никому узнать главный секрет культа - наш флаг.
+attribution: "Автор [@m41den](https://t.me/m41den)"
+value: 1000
+type: dynamic # IDK how much it costs
+
+extra:
+  initial: 1000
+  decay: 10
+  minimum: 100
+
+connection_info: "https://iworshippdf.tasks.ctf.vrnctf.ru"
+
+# Все способы описать флаг
+# flags:
+#     # A static case sensitive flag
+#     - flag{3xampl3}
+#     # A static case sensitive flag created with a dictionary
+#     - {
+#         type: "static",
+#         content: "flag{wat}",
+#     }
+#     # A static case insensitive flag
+#     - {
+#         type: "static",
+#         content: "flag{wat}",
+#         data: "case_insensitive",
+#     }
+#     # A regex case insensitive flag
+#     - {
+#         type: "regex",
+#         content: "(.*)STUFF(.*)",
+#         data: "case_insensitive",
+#     }
+
+flags:
+  - vrnctf{Pr3$$_F_F0r_PDF}
+
+topics:
+  - Path Traversal
+
+# Хинты по умолчанию скрыты, сделайте их заранее, их откроем на половине соревнований на нерешенные таски
+# hints:
+#     - {
+#         content: "This hint costs points",
+#         cost: 10
+#     }
+#     - This hint is free
+
+# hints:
+#   - Игнорируйте загрузку и конвертацию файлов. Лучше узнайте как у скачивания дела обстоят.
+
+# visible/hidden
+state: visible
+version: "0.1"
+

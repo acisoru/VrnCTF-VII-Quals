@@ -1,0 +1,57 @@
+name: xen_reminder
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:13-alpine
+    container_name: reminders-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: reminders
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # ports:
+    #   - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Backend Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: reminders-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: reminders
+      PORT: 8080
+      FLAG: vrnctf{CTFM4N_D3M3NT14_ASYLUM}
+      JWT_SECRET: everyday_im_getting_stupid_anyway
+    # ports:
+    #   - "8080:8080"
+    volumes:
+      - reminders_data:/app/reminders
+
+  # Frontend Service + nginx
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: reminders-frontend
+    ports:
+      - "6970:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  reminders_data:

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package imageservice;
+
+service ImageService {
+  rpc CropSquare(ImageRequest) returns (ImageResponse);
+  rpc CropCircular(ImageRequest) returns (ImageResponse);
+  rpc CropRhombus(ImageRequest) returns (ImageResponse);
+  rpc GetFlag(FlagRequest) returns (FlagResponse);
+}
+
+message ImageRequest {
+  bytes image_data = 1;
+  int32 width = 2;
+  int32 height = 3;
+  string api_key = 4;
+}
+
+message ImageResponse {
+  bytes image_data = 1;
+  string message = 2;
+}
+
+message FlagRequest {
+  string api_key = 1;
+}
+
+message FlagResponse {
+  string flag = 1;
+  string message = 2;
+}

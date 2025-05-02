@@ -1,0 +1,12 @@
+name: webtroll
+
+services:
+  webtroll:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - FLAG=vrnctf{sw4gg3r_1n_sw4gg3r_1n_sw4gg3r_m4z3_2025}
+    restart: unless-stopped

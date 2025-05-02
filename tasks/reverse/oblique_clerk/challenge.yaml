@@ -1,0 +1,27 @@
+name: "Oblique clerk"
+author: "@pipeline_sh"
+category: "reverse"
+description: |
+  На корабле, аккуратность - первыше всего!
+
+attribution: "Автор [@pipeline_sh](https://t.me/pipeline_sh)"
+value: 1000
+type: dynamic
+
+extra:
+    initial: 1000
+    decay: 10
+    minimum: 100
+
+flags:
+  - vrnctf{Gl0ry_t0_P3t3r_th3_Gr3At}
+
+files: 
+  - public/challenge.zip
+
+# visible/hidden на платформе
+state: visible
+
+# Не трогаем, версия спецификации
+version: "0.1"
+

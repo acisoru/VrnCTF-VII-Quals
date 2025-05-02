@@ -1,0 +1,21 @@
+name: nullshare
+
+services:
+  nullidor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: null-idor-app
+    ports:
+      - "3313:3000"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3000
+    restart: unless-stopped
+    networks:
+      - null-idor-network
+
+networks:
+  null-idor-network:
+    driver: bridge

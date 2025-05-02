@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package imageservice;
+
+service ImageService {
+  // Crop an image to a square shape
+  rpc CropSquare(ImageRequest) returns (ImageResponse);
+  
+  // Crop an image to a circular shape
+  rpc CropCircular(ImageRequest) returns (ImageResponse);
+  
+  // Crop an image to a rhombus shape
+  rpc CropRhombus(ImageRequest) returns (ImageResponse);
+  
+  // Hidden method to get the flag (not documented in frontend)
+  rpc GetFlag(FlagRequest) returns (FlagResponse);
+}
+
+message ImageRequest {
+  bytes image_data = 1;
+  int32 width = 2;
+  int32 height = 3;
+  string api_key = 4; // API key for authentication (set to sSG7kA2ir8pgw8pSfHUjVHBnz35YCM95)
+}
+
+message ImageResponse {
+  bytes image_data = 1;
+  string message = 2;
+}
+
+message FlagRequest {
+  string api_key = 1;
+}
+
+message FlagResponse {
+  string flag = 1;
+  string message = 2;
+}

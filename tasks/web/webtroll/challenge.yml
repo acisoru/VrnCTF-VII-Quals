@@ -1,0 +1,21 @@
+name: "WebTroll"
+author: "@alexereh"
+category: "web"
+description: |
+  Тут было описание, но автор, сиречь Петр, вас затроллил :)
+attribution: "Автор [@alexereh](https://t.me/alexereh)"
+value: 1000
+type: dynamic
+
+extra:
+  initial: 1000
+  decay: 10
+  minimum: 100
+
+connection_info: "https://webtroll.tasks.ctf.vrnctf.ru"
+
+flags:
+  - vrnctf{sw4gg3r_1n_sw4gg3r_1n_sw4gg3r_m4z3_2025}
+
+state: visible
+version: "0.1"

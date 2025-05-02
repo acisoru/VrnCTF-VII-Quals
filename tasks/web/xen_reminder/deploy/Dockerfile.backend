@@ -1,0 +1,36 @@
+# Build stage
+FROM golang:1.24.1 AS builder
+
+WORKDIR /app
+
+# Copy the source code
+COPY backend/ ./
+
+# Download all dependencies
+RUN go mod tidy
+
+# Build the application with static linking
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+# Final stage
+FROM alpine:latest
+
+# Install required packages
+RUN apk --no-cache add tzdata bash postgresql-client
+
+# Set timezone to GMT+3
+ENV TZ=Europe/Moscow
+
+WORKDIR /app
+
+# Copy the binary from builder stage
+COPY --from=builder /app/main /app/
+
+# Create reminders directory
+RUN mkdir -p reminders
+
+# Expose port 8080
+EXPOSE 8080
+
+# Command to run the application
+CMD ["/app/main"]

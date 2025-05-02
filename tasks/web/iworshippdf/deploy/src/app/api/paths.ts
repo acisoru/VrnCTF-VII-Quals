@@ -1,0 +1,1 @@
+export const FOLDER = `/app/uploads/`

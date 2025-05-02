@@ -1,0 +1,35 @@
+name: "NullShare"
+author: "@alexereh"
+category: "web"
+description: |
+  Нужно хранить и поделиться своими фотографиями? Наш сервис NullShare - это идеальное решение! 
+  
+  Креды: user/user
+
+attribution: "Автор [@alexereh](https://t.me/alexereh)"
+value: 1000
+type: dynamic
+
+extra:
+  initial: 1000
+  decay: 10
+  minimum: 100
+
+connection_info: "https://nullshare.tasks.ctf.vrnctf.ru"
+
+
+flags:
+  - vrnctf{nu11_uu1d_1d0r_vu1n3r4b1117y_2025}
+
+topics:
+  - IDOR
+
+# files: []
+
+# hints:
+#   - Какой формат идентификаторов используется для изображений?
+#   - Какие бывают стандартные значения UUID?
+#   - Какие есть пользователи в системе?
+
+state: visible
+version: "0.1"

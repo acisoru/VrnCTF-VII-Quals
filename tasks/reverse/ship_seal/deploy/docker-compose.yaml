@@ -1,0 +1,8 @@
+name: ship_seal
+
+services:
+  ship_seal:
+    build: .
+    scale: 1
+    ports:
+      - "8085:5000"

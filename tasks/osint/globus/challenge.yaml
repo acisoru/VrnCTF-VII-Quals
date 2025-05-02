@@ -1,0 +1,88 @@
+# Имя, которое отразится на платформе CTFd
+name: "globus"
+# Ваш Telegram никнейм (не отображается на платформе)
+author: "@jim_amlt"
+# Категория - название папки, в которой лежит таск
+category: "osint"
+# Категория будет отображаться на платформе в описании таска. Поддерживается md формат 
+description: |
+  Посыльный принес тебе письмо от лазутчика из дальних краев, которое должно было содержать важные разведданные. Но почему в конверте только какая-то фотография и нет никакой записки? Может все не так просто?
+  
+  [Фотография](public/boat.png)
+# Ссылка на ваш ТГ аккаунт, чтобы с вами могли оперативно связаться по задаче
+attribution: "Автор [@jim_amlt](https://t.me/jim_amlt)"
+value: 100
+type: dynamic
+
+# Reference - https://github.com/CTFd/ctfcli/blob/master/ctfcli/spec/challenge-example.yml
+extra:
+    initial: 100
+    decay: 10
+    minimum: 10
+
+# Описание как коннектиться к вашей задаче. Сюда же можно и ссылку дать, если не в описании
+#connection_info: "nc example.com 5432"
+
+# Раскомментируйте, если хотите сделать так, чтобы у таска было ограниченное число попыток сдачи
+# Мы в рамках VrnCTF не используем
+# attempts: 5
+
+# Все способы описать флаг
+# flags:
+#     # A static case sensitive flag
+#     - flag{3xampl3}
+#     # A static case sensitive flag created with a dictionary
+#     - {
+#         type: "static",
+#         content: "flag{wat}",
+#     }
+#     # A static case insensitive flag
+#     - {
+#         type: "static",
+#         content: "flag{wat}",
+#         data: "case_insensitive",
+#     }
+#     # A regex case insensitive flag
+#     - {
+#         type: "regex",
+#         content: "(.*)STUFF(.*)",
+#         data: "case_insensitive",
+#     }
+
+flags:
+  - vrnctf{5p34k_br13fly_45k_l177l3_l34v3_qu1ckly}
+
+# Особо ни на что не влияет, по желанию можно раскомментировать и заполнить
+# topics:
+#     - sql injection
+
+# Файлы из папки public, которые раздаем пользователям. Либо текстовые файлики, либо архивы
+# Сильно жирные файлы раздаем через гугл-облако/яндекс-диск/линк с s3
+files:
+  - public/boat.png
+#  - public/app.py
+
+# Хинты по умолчанию скрыты, сделайте их заранее, их откроем на половине соревнований на нерешенные таски
+# hints:
+#     - {
+#         content: "This hint costs points",
+#         cost: 10
+#     }
+#     - This hint is free
+
+hints:
+  - Проверь метаданные изображения
+  - https://en.wikipedia.org/wiki/Geohash
+  - https://www.geohash.es/draw
+
+# Если ваш таск зависит от другого таска, например, они идут друг за другом и без сдачи одного не будет доступен другой
+# requirements:
+#     - "Warmup"
+#     - "Are you alive"
+
+# visible/hidden на платформе
+state: visible
+
+# Не трогаем, версия спецификации
+version: "0.1"
+

@@ -1,0 +1,58 @@
+name: glooseRPC
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./proto:/proto
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - vrnctf-network
+
+  envoy:
+    image: envoyproxy/envoy:v1.25-latest
+    # ports:
+    #   - "8080:8080" # gRPC-web proxy
+    #   - "9901:9901" # Envoy admin
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+      - ./proto.pb:/etc/envoy/proto.pb
+    depends_on:
+      - backend
+    networks:
+      - vrnctf-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    # ports:
+    #   - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_GRPC_WEB_URL=/grpc
+    depends_on:
+      - envoy
+    restart: unless-stopped
+    networks:
+      - vrnctf-network
+  
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "6969:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    depends_on:
+      - frontend
+      - envoy
+    networks:
+      - vrnctf-network
+
+networks:
+  vrnctf-network:
+    driver: bridge

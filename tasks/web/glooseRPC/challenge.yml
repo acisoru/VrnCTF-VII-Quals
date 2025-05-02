@@ -1,0 +1,61 @@
+name: "GlooseRPC"
+author: "@m41den"
+category: "web"
+# Категория будет отображаться на платформе в описании таска. Поддерживается md формат 
+description: |
+  Мы рады сообщить пользователям слабых компьютеров, что мы наконец-то перенесли редактирование изображений на сервер.
+  Обрезайте картинки и загоняйте их в ромбы еще быстрее, чем раньше!
+attribution: "Автор [@m41den](https://t.me/m41den)"
+value: 1000
+type: dynamic # IDK how much it costs
+
+extra:
+  initial: 1000
+  decay: 10
+  minimum: 100
+
+connection_info: "https://gloose.tasks.ctf.vrnctf.ru"
+
+# Все способы описать флаг
+# flags:
+#     # A static case sensitive flag
+#     - flag{3xampl3}
+#     # A static case sensitive flag created with a dictionary
+#     - {
+#         type: "static",
+#         content: "flag{wat}",
+#     }
+#     # A static case insensitive flag
+#     - {
+#         type: "static",
+#         content: "flag{wat}",
+#         data: "case_insensitive",
+#     }
+#     # A regex case insensitive flag
+#     - {
+#         type: "regex",
+#         content: "(.*)STUFF(.*)",
+#         data: "case_insensitive",
+#     }
+
+flags:
+  - vrnctf{Gl00s3_RPC_just_w4nt3d_y0u_to_int3rcept_1t}
+
+topics:
+  - Debugging
+
+# Хинты по умолчанию скрыты, сделайте их заранее, их откроем на половине соревнований на нерешенные таски
+# hints:
+#     - {
+#         content: "This hint costs points",
+#         cost: 10
+#     }
+#     - This hint is free
+
+# hints:
+#   - "В чем отличие между gRPC и Web-gRPC? Просто в том, что вместо TCP мы указываем функцию в URL, а данные вместо ProtoBuf в JSON"
+
+# visible/hidden
+state: visible
+version: "0.1"
+
