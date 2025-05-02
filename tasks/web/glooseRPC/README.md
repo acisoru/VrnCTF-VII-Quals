@@ -9,5 +9,5 @@
 
 **Flag:** `vrnctf{Gl00s3_RPC_just_w4nt3d_y0u_to_int3rcept_1t}`
 
-**Solution:** [View solution](solution)
+**Solution:** [View solution](https://from.m41den.com/vrnctf-glooserpc)
 

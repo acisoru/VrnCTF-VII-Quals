@@ -9,5 +9,5 @@
 
 **Flag:** `vrnctf{Pr3$$_F_F0r_PDF}`
 
-**Solution:** [View solution](solution)
+**Solution:** [View solution](https://from.m41den.com/vrnctf-iworshippdf)
 
